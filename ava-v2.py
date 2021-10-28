@@ -169,12 +169,17 @@ def config_writer(ligands, receptor_input, coord, box, seeding=0):
 
 # Run Script
 if __name__ == '__main__':
+
     file_names = []  # Empty list for names of config files
+
+    working_directory = input('Please input working directory: ') # Ask for working directory for ava
+    os.chdir(working_directory)     # change directory to input
+
     ligand_list = get_ligands()  # Generate a list of ligand files
     receptor = get_receptor()  # Receive file name of receptor
     coordinates = get_coords()  # Receive co-ordinates of box in format x y z
     box_size = get_box_size()  # Receive box size in format x y z
-    seed_list = get_seeds()
+    seed_list = get_seeds() # Receive list of seeds for docking experiments
 
     # Generate config files for AutoDock Vina
     [config_writer(x, receptor, coordinates, box_size, seeding=y) for y in seed_list for x in ligand_list]
