@@ -191,33 +191,63 @@ def config_writer(ligands, receptor_input, coord, box, seeding=0):
         file_names.append(file_name)  # append file name to list for automatic docking
 
 
-def extract_data(file, i):
-    file_name = file.split('-')  # extract ligand name and seed number from file name as a list
-    ligand = file_name[0]  # store ligand name
-    seed = file_name[-1].replace('.txt', '')  # store seed number
+def get_binding_data_csv():
 
-    # Open log file to collect binding data
-    with open(file, 'r') as log:
-        try:
-            logs = log.readlines()  # convert each line into a string
-            raw_data = logs[i].split()  # split values into list
-            map_data = map(float, raw_data)  # convert strings to floats
-            list_data = list(map_data)  # convert map to list
-            list_data.insert(0, ligand)  # Add ligand name as 1st element
-            list_data.insert(1, seed)  # Add seed number as 2nd element
-            log_list.append(list_data)  # Append data to overall data list
+    # Extract data from log files
+    def extract_data(file, i):
+        file_name = file.split('-')  # extract ligand name and seed number from file name as a list
+        ligand = file_name[0]  # store ligand name
+        seed = file_name[-1].replace('.txt', '')  # store seed number
 
-        except IndexError:
-            print(f'Error could not read file: {file}')
-            pass
+        # Open log file to collect binding data
+        with open(file, 'r') as log:
+            try:
+                logs = log.readlines()  # convert each line into a string
+                raw_data = logs[i].split()  # split values into list
+                map_data = map(float, raw_data)  # convert strings to floats
+                list_data = list(map_data)  # convert map to list
+                list_data.insert(0, ligand)  # Add ligand name as 1st element
+                list_data.insert(1, seed)  # Add seed number as 2nd element
+                log_list.append(list_data)  # Append data to overall data list
 
-        except UnicodeDecodeError:
-            print(f'Error could not read file: {file}')
-            pass
+            except IndexError:
+                print(f'Error could not read file: {file}')
+                pass
 
-        except ValueError:
-            print(f'Error could not read file: {file}')
-            pass
+            except UnicodeDecodeError:
+                print(f'Error could not read file: {file}')
+                pass
+
+            except ValueError:
+                print(f'Error could not read file: {file}')
+                pass
+
+    current_working_directory = os.getcwd()
+    directory_list = ' '.join(str(ele) for ele in os.listdir())  # Generate string to search for logs directories
+
+    result = re.finditer(r"logs-[0-9]*[0-9]*[0-9]", directory_list)  # Identify logs directories within pwd
+
+    log_dirs = []
+    [log_dirs.append(val.group(0)) for val in result]  # store names of log directories in a list
+
+    log_list = []  # store rows of data extracted from log files
+
+    # Access and collect log data from log files in each directory
+    for directory in log_dirs:
+        os.chdir(directory)
+        print(f'Extracting Log data from {directory}...')
+        [extract_data(file, i) for file in os.listdir() for i in range(26, 35, 1)]
+        print(f'Log data extracted from {directory}...')
+        os.chdir(current_working_directory)
+
+    log_array = np.array(log_list)  # convert collected data into a 2D NumPy array
+
+    # convert 2D NumPy array to DataFrame
+    log_df = pd.DataFrame(log_array, columns=['ligand', 'seed', 'binding mode', 'affinity (kcal/mol)',
+                                              'distance from best mode rmsd l.b', 'distance from best mode rmsd u.b'])
+
+    # Save DataFrame to CSV file
+    log_df.to_csv(f'{current_working_directory}/binding-affinity-data.csv',index=False, header=True)
 
 
 # Run Script
@@ -241,32 +271,7 @@ if __name__ == '__main__':
     # Run AutoDock Vina using generated config files list
     [os.system(f'vina --config {config}') for config in file_names]
 
-    # Collect binding affinity data
-    directory_list = ' '.join(str(ele) for ele in os.listdir())  # Generate string to search for logs directories
-
-    result = re.finditer(r"logs-[0-9]*[0-9]*[0-9]", directory_list)  # Identify logs directories within pwd
-
-    log_dirs = []
-    [log_dirs.append(val.group(0)) for val in result]  # store names of log directories in a list
-
-    log_list = []  # store rows of data extracted from log files
-
-    # Access and collect log data from log files in each directory
-    for directory in log_dirs:
-        os.chdir(directory)
-        print(f'Extracting Log data from {directory}...')
-        [extract_data(file, i) for file in os.listdir() for i in range(26, 35, 1)]
-        print(f'Log data extracted from {directory}...')
-        os.chdir(working_directory)
-
-    log_array = np.array(log_list)  # convert collected data into a 2D NumPy array
-
-    # convert 2D NumPy array to DataFrame
-    log_df = pd.DataFrame(log_array, columns=['ligand', 'seed', 'binding mode', 'affinity (kcal/mol)',
-                                              'distance from best mode rmsd l.b', 'distance from best mode rmsd u.b'])
-
-    # Save DataFrame to CSV file
-    log_df.to_csv(f'{working_directory}/binding-affinity-data.csv',index=False, header=True)
+    get_binding_data_csv()
 
     # *** TESTING ***
     # PWD: /Users/oliverpowell/OneDrive - Norwich BioScience Institutes/morpholines/docking/scripts/ava-version2/test
