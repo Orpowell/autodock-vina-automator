@@ -192,7 +192,6 @@ def config_writer(ligands, receptor_input, coord, box, seeding=0):
 
 
 def get_binding_data_csv():
-
     # Extract data from log files
     def extract_data(file, i):
         file_name = file.split('-')  # extract ligand name and seed number from file name as a list
@@ -222,6 +221,10 @@ def get_binding_data_csv():
                 print(f'Error could not read file: {file}')
                 pass
 
+    if "results" not in os.listdir():
+        os.mkdir("results")
+        print('logs directory created')
+
     current_working_directory = os.getcwd()
     directory_list = ' '.join(str(ele) for ele in os.listdir())  # Generate string to search for logs directories
 
@@ -246,8 +249,28 @@ def get_binding_data_csv():
     log_df = pd.DataFrame(log_array, columns=['ligand', 'seed', 'binding mode', 'affinity (kcal/mol)',
                                               'distance from best mode rmsd l.b', 'distance from best mode rmsd u.b'])
 
-    # Save DataFrame to CSV file
-    log_df.to_csv(f'{current_working_directory}/binding-affinity-data.csv',index=False, header=True)
+    path = f'{current_working_directory}/results/binding-affinity-data.csv'  # generate file name for csv file
+    log_df.to_csv(path, index=False, header=True)  # Save DataFrame to CSV file
+    print(f'Log data retrieved and saved as {path}')    # Tell user location of CSV file
+
+
+def visualise_structures():
+
+    directory_list = ' '.join(str(ele) for ele in os.listdir())  # Generate string to search for conformation directories
+
+    result = re.finditer(r"conformations-[0-9]*[0-9]*[0-9]*[0-9]*[0-9]*[0-9]*[0-9]*[0-9]*[0-9]", directory_list)    # Search for directories
+
+    conformation_dirs = []
+    [conformation_dirs.append(val.group(0)) for val in result]  # Store identified directories
+
+    conformations_list = [receptor]     # list of all .pdbqt files to be visualised
+    [conformations_list.append(f'{directory}/{file}') for directory in conformation_dirs for file in os.listdir(directory)]     #
+
+    conformation_files = " ".join(conformations_list)
+
+    pymol_command = f'/Applications/PyMOL.app/Contents/MacOS/PyMOL -cq {conformation_files} -d "save results/analysis.pse"'
+
+    os.system(pymol_command)
 
 
 # Run Script
@@ -271,12 +294,6 @@ if __name__ == '__main__':
     # Run AutoDock Vina using generated config files list
     [os.system(f'vina --config {config}') for config in file_names]
 
-    get_binding_data_csv()
+    get_binding_data_csv()   # Collect binding affinity data and save as a CSV file
+    visualise_structures()  # Visualise the results of AutoDock Vina predictions for all experiments
 
-    # *** TESTING ***
-    # PWD: /Users/oliverpowell/OneDrive - Norwich BioScience Institutes/morpholines/docking/scripts/ava-version2/test
-    # ligands: amorolfine.pdbqt erg2-substrate.pdbqt
-    # receptor: yeast-erg2-alphafold.pdbqt
-    # coordinates: 0 3.147 0
-    # box: 48 32 34
-    # seed: 0 22 305
