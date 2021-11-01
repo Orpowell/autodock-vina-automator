@@ -10,7 +10,7 @@ A.V.A is designed to automate the processing of ligand docking for small collect
 
 ## Installing A.V.A on Linux & MacOSX
 
-At the command line, change directory to the directory where ava.py was downloaded, `<download-directory>`{=html}, using the full path name.
+At the command line, change directory to the directory where ava-v2.py was downloaded, `<download-directory>`{=html}, using the full path name.
 
     cd <download-directory>
 
@@ -18,15 +18,15 @@ Now move the file to where you normally keep your binaries. This directory shoul
 
 As root:
 
-    mv ava.py /usr/local/bin/
+    mv ava-v2.py /usr/local/bin/
 
 As regular user:
 
-    sudo mv ava.py /usr/local/bin/
+    sudo mv ava-v2.py /usr/local/bin/
 
-A.V.A should now run from the shell or Terminal using the command ava.py
+A.V.A should now run from the shell or Terminal using the command ava-v2.py
 
-Alternatively, ava.py can be run directly from an IDE.
+Alternatively, ava-v2.py can be run directly from an IDE.
 
 ## Pre-processing for A.V.A
 
@@ -41,7 +41,7 @@ These processes can all be achieved using AutoDock Tools.
 
 ## Running A.V.A
 
-A directory should be set-up containing all ligand and receptor files in the .pdbqt file format before running ava.py in the directory. A.V.A will then ask for the following inputs, press enter to continue after each input:
+A directory should be set-up containing all ligand and receptor files in the .pdbqt file format before running ava-v2.py in the directory. A.V.A will then ask for the following inputs, press enter to continue after each input:
 
 Working directory: The path to the directory containing all pre-processed files.
 
