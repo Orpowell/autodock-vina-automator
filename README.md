@@ -1,6 +1,6 @@
-# AutoDock Vina Automation with A.V.A
+# AutoDock Vina Automation
 
-A.V.A is designed to automate the processing of ligand docking for small collections of molecules (2-10 molecules) to a targeted region of a protein in Autodock Vina with relative ease.
+The AutoDock Vina Automator (A.V.A) is designed to automate the processing of ligand docking for small collections of molecules (2-10 molecules) to a targeted region of a protein in Autodock Vina with relative ease.
 
 ## Dependencies
 
@@ -10,7 +10,7 @@ A.V.A is designed to automate the processing of ligand docking for small collect
 
 ## Installing A.V.A on Linux & MacOSX
 
-At the command line, change directory to the directory where ava-v2.py was downloaded, `<download-directory>`{=html}, using the full path name.
+At the command line, change directory to the directory where ava.py was downloaded, `<download-directory>`{=html}, using the full path name.
 
     cd <download-directory>
 
@@ -18,15 +18,15 @@ Now move the file to where you normally keep your binaries. This directory shoul
 
 As root:
 
-    mv ava-v2.py /usr/local/bin/
+    mv ava.py /usr/local/bin/
 
 As regular user:
 
-    sudo mv ava-v2.py /usr/local/bin/
+    sudo mv ava.py /usr/local/bin/
 
-A.V.A should now run from the shell or Terminal using the command ava-v2.py
+A.V.A should now run from the shell or Terminal using the command ava.py
 
-Alternatively, ava-v2.py can be run directly from an IDE.
+Alternatively, ava.py can be run directly from an IDE.
 
 ## Pre-processing for A.V.A
 
