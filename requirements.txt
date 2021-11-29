@@ -1,3 +1,2 @@
 numpy==1.21.1
 pandas==1.3.1
-AutoDock-Vina==1.1.2
