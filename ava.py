@@ -2,7 +2,7 @@
 
 import os
 import re
-import numpy as np
+from numpy import array
 import pandas as pd
 
 
@@ -154,23 +154,11 @@ def get_seeds():
 def config_writer(ligands, receptor_input, coord, box, seeding=0):
     conformations_directory = f'conformations-{seeding}'
     logs_directory = f'logs-{seeding}'
-    file_name = f'{ligands[:-6]}-vina-config-{seeding}.txt'
+    file_name = f'{ligands[:-6]}-config-{seeding}.txt'
     receptor_file = receptor_input
     ligand_file = ligands
-    output_file = f'{conformations_directory}/{ligands[:-6]}-vina-{seeding}.pdbqt'
-    log_file = f'{logs_directory}/{ligands[:-6]}-vina-log-{seeding}.txt'
-
-    # Check for existing and generate directories for docking files and logs
-    if conformations_directory not in os.listdir():
-        os.mkdir(conformations_directory)
-        print('confirmations directory created')
-
-    if logs_directory not in os.listdir():
-        os.mkdir(logs_directory)
-        print('logs directory created')
-
-    else:
-        print('Directories already present')
+    output_file = f'{conformations_directory}/{ligands[:-6]}-{seeding}.pdbqt'
+    log_file = f'{logs_directory}/{ligands[:-6]}-log-{seeding}.txt'
 
     # Generate the config file using inputs
     with open(file_name, 'w') as config:
@@ -223,7 +211,7 @@ def get_binding_data_csv():
 
     if "results" not in os.listdir():
         os.mkdir("results")
-        print('logs directory created')
+        print('results directory created')
 
     current_working_directory = os.getcwd()
     directory_list = ' '.join(str(ele) for ele in os.listdir())  # Generate string to search for logs directories
@@ -243,7 +231,7 @@ def get_binding_data_csv():
         print(f'Log data extracted from {directory}...')
         os.chdir(current_working_directory)
 
-    log_array = np.array(log_list)  # convert collected data into a 2D NumPy array
+    log_array = array(log_list)  # convert collected data into a 2D NumPy array
 
     # convert 2D NumPy array to DataFrame
     log_df = pd.DataFrame(log_array, columns=['ligand', 'seed', 'binding mode', 'affinity (kcal/mol)',
@@ -288,8 +276,6 @@ if __name__ == '__main__':
 
     # Generate config files for AutoDock Vina
     [config_writer(x, receptor, coordinates, box_size, seeding=y) for y in seed_list for x in ligand_list]
-
-    print(file_names)
 
     # Run AutoDock Vina using generated config files list
     [os.system(f'vina --config {config}') for config in file_names]
