@@ -239,7 +239,7 @@ def get_binding_data_csv():
     for directory in log_dirs:
         os.chdir(directory)
         print(f'Extracting Log data from {directory}...')
-        [extract_data(file, i) for file in os.listdir() for i in range(26, 35, 1)]
+        [extract_data(file, i) for file in os.listdir() for i in range(25, 35, 1)]
         print(f'Log data extracted from {directory}...')
         os.chdir(current_working_directory)
 
@@ -296,4 +296,3 @@ if __name__ == '__main__':
 
     get_binding_data_csv()   # Collect binding affinity data and save as a CSV file
     visualise_structures()  # Visualise the results of AutoDock Vina predictions for all experiments
-
