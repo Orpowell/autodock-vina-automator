@@ -1,0 +1,9 @@
+cff-version: 1.0.4
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Oliver
+    given-names: Powell
+    
+title: autodock-vina-automator: v1.0.3
+version: v1.0.4
+date-released: 2021-11-21
