@@ -112,5 +112,7 @@ MyWorkingDirectory
 	Author: Oliver Powell
 	Date: 29 November 2021
 	Code version: 1.0.0
-	DOI: [![DOI](https://zenodo.org/badge/423495200.svg)](https://zenodo.org/badge/latestdoi/423495200)
+	DOI: 
 	Available at:  https://github.com/Orpowell/autodock-vina-automator
+
+[![DOI](https://zenodo.org/badge/423495200.svg)](https://zenodo.org/badge/latestdoi/423495200)
