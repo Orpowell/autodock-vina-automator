@@ -88,23 +88,23 @@ In the scenario, the structure of files produced by A.V.A for docking experiment
 
 MyWorkingDirectory
 	 |
-	 |‚ÄîLigand1-config-20.txt
- 	 |‚ÄîLigand2-config-20.txt
-	 |‚ÄîLigand3-config-20.txt
+	 |---Ligand1-config-20.txt
+ 	 |---Ligand2-config-20.txt
+	 |---Ligand3-config-20.txt
 	 |
-	 |‚Äî‚Äî‚ÄîConformations-20
-	 |	|‚ÄîLigand1-20.pdbqt
-	 |	|‚ÄîLigand2-20.pdbqt
-	 |	|‚ÄîLigand3-20.pdbqt
+	 |------Conformations-20
+	 |	|---Ligand1-20.pdbqt
+	 |	|---Ligand2-20.pdbqt
+	 |	|---Ligand3-20.pdbqt
 	 |
-	 |‚Äî‚Äî‚ÄîLogs-20
-	 |	|‚ÄîLigand1-log-20.txt
-	 |	|‚ÄîLigand2-log-20.txt
-	 |	|‚ÄîLigand3-log-20.txt
+	 |------Logs-20
+	 |	|---Ligand1-log-20.txt
+	 |	|---Ligand2-log-20.txt
+	 |	|---Ligand3-log-20.txt
 	 |
-	 |‚Äî‚Äî‚ÄîResults
-		\|‚Äîanalysis.pse
-		|‚Äîbinding-affinity-data.csv
+	 |------Results
+		|---analysis.pse
+		|---binding-affinity-data.csv
 
 ## Citing this work
 
