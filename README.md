@@ -1,6 +1,6 @@
 # AutoDock Vina Automator
 
-A.V.A, is designed to automate the docking of multiple ligands to a single target protein in AutoDock Vina.  A.V.A automates large parts of the workflow associated with ligand docking including:
+A.V.A is designed to automate the docking of multiple ligands to a single target protein in AutoDock Vina.  A.V.A automates large parts of the workflow associated with ligand docking including:
 
 - Preparing ligand config file for AutoDock Vina
 - Running AutoDock Vina
