@@ -6,6 +6,19 @@ from numpy import array
 import pandas as pd
 
 
+# Get working directory for data
+def get_working_directory():
+    dir_path = input('Please input working directory: ')
+
+    if dir_path in os.listdir():
+        return dir_path
+
+    else:
+        print(f'Error: Directory {dir_path} not found...')
+        retry = get_working_directory()
+        return retry
+
+
 # Collect ligand file names for log files
 def get_ligands():
     # Check that a file exists with the working directory
@@ -162,7 +175,6 @@ def config_writer(ligands, receptor_input, coord, box, seeding=0):
 
     # Generate the config file using inputs
     with open(file_name, 'w') as config:
-
         config.write(f'receptor = {receptor_file}\n'  # receptor file
                      f'ligand = {ligand_file}\n\n'  # ligand file
                      f'center_x = {coord[0]}\n'  # grid coordinates for box
@@ -239,20 +251,22 @@ def get_binding_data_csv():
 
     path = f'{current_working_directory}/results/binding-affinity-data.csv'  # generate file name for csv file
     log_df.to_csv(path, index=False, header=True)  # Save DataFrame to CSV file
-    print(f'Log data retrieved and saved as {path}')    # Tell user location of CSV file
+    print(f'Log data retrieved and saved as {path}')  # Tell user location of CSV file
 
 
 def visualise_structures():
+    directory_list = ' '.join(
+        str(ele) for ele in os.listdir())  # Generate string to search for conformation directories
 
-    directory_list = ' '.join(str(ele) for ele in os.listdir())  # Generate string to search for conformation directories
-
-    result = re.finditer(r"conformations-[0-9]*[0-9]*[0-9]*[0-9]*[0-9]*[0-9]*[0-9]*[0-9]*[0-9]", directory_list)    # Search for directories
+    result = re.finditer(r"conformations-[0-9]*[0-9]*[0-9]*[0-9]*[0-9]*[0-9]*[0-9]*[0-9]*[0-9]",
+                         directory_list)  # Search for directories
 
     conformation_dirs = []
     [conformation_dirs.append(val.group(0)) for val in result]  # Store identified directories
 
-    conformations_list = [receptor]     # list of all .pdbqt files to be visualised
-    [conformations_list.append(f'{directory}/{file}') for directory in conformation_dirs for file in os.listdir(directory)]     #
+    conformations_list = [receptor]  # list of all .pdbqt files to be visualised
+    [conformations_list.append(f'{directory}/{file}') for directory in conformation_dirs for file in
+     os.listdir(directory)]  #
 
     conformation_files = " ".join(conformations_list)
 
@@ -265,7 +279,7 @@ def visualise_structures():
 if __name__ == '__main__':
     file_names = []  # Empty list for names of config files
 
-    working_directory = input('Please input working directory: ')  # Ask for working directory for ava
+    working_directory = get_working_directory()  # Ask for working directory for ava
     os.chdir(working_directory)  # change directory to input
 
     ligand_list = get_ligands()  # Generate a list of ligand files
@@ -280,5 +294,5 @@ if __name__ == '__main__':
     # Run AutoDock Vina using generated config files list
     [os.system(f'vina --config {config}') for config in file_names]
 
-    get_binding_data_csv()   # Collect binding affinity data and save as a CSV file
+    get_binding_data_csv()  # Collect binding affinity data and save as a CSV file
     visualise_structures()  # Visualise the results of AutoDock Vina predictions for all experiments
