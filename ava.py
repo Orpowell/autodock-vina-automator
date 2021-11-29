@@ -275,7 +275,7 @@ def visualise_structures():
     os.system(pymol_command)
 
 
-citation = ["* Oliver, P. (2021).", "* Autodock Vina Automator (Version v1.0.1) [Computer software].", "* DOI: Hi, if you're trying to cite my work, I don't know how to get a DOI... please reach out at doi@oliverpowell.com"]
+citation = ["* Oliver, P. (2021).", "* Autodock Vina Automator (Version v1.0.2) [Computer software].", "* DOI: Hi, if you're trying to cite my work, I don't know how to get a DOI... please reach out at doi@oliverpowell.com"]
 
 # Run Script
 if __name__ == '__main__':
