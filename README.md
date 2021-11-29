@@ -113,7 +113,7 @@ In the scenario, the structure of files produced by A.V.A for docking experiment
 	Title: AutoDock Vina Automator
 	Author: Oliver Powell
 	Date: 29 November 2021
-	Code version: 1.0.0
-	DOI: 
+	Code version: 1.0.2
+	DOI: 10.5281/zenodo.5735477
 	Available at:  https://github.com/Orpowell/autodock-vina-automator
 
