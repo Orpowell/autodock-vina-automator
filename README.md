@@ -1,4 +1,6 @@
 # AutoDock Vina Automator
+[![DOI](https://zenodo.org/badge/423495200.svg)](https://zenodo.org/badge/latestdoi/423495200)
+
 A.V.A, is designed to automate the docking of multiple ligands to a single target protein in AutoDock Vina.  A.V.A automates large parts of the workflow associated with ligand docking including:
 
 - Preparing ligand config file for AutoDock Vina
@@ -86,25 +88,25 @@ After running AutoDock Vina, A.V.A processes the raw dat into processed outputs 
 
 In the scenario, the structure of files produced by A.V.A for docking experiments using the seed 20 would be as follows:
 
-MyWorkingDirectory
-	 |
-	 |---Ligand1-config-20.txt
- 	 |---Ligand2-config-20.txt
-	 |---Ligand3-config-20.txt
-	 |
-	 |------Conformations-20
-	 |	|---Ligand1-20.pdbqt
-	 |	|---Ligand2-20.pdbqt
-	 |	|---Ligand3-20.pdbqt
-	 |
-	 |------Logs-20
-	 |	|---Ligand1-log-20.txt
-	 |	|---Ligand2-log-20.txt
-	 |	|---Ligand3-log-20.txt
-	 |
-	 |------Results
-		|---analysis.pse
-		|---binding-affinity-data.csv
+	MyWorkingDirectory
+		 |
+		 |---Ligand1-config-20.txt
+		 |---Ligand2-config-20.txt
+		 |---Ligand3-config-20.txt
+		 |
+		 |------Conformations-20
+		 |	|---Ligand1-20.pdbqt
+		 |	|---Ligand2-20.pdbqt
+		 |	|---Ligand3-20.pdbqt
+		 |
+		 |------Logs-20
+		 |	|---Ligand1-log-20.txt
+		 |	|---Ligand2-log-20.txt
+		 |	|---Ligand3-log-20.txt
+		 |
+		 |------Results
+			|---analysis.pse
+			|---binding-affinity-data.csv
 
 ## Citing this work
 
@@ -115,4 +117,3 @@ MyWorkingDirectory
 	DOI: 
 	Available at:  https://github.com/Orpowell/autodock-vina-automator
 
-[![DOI](https://zenodo.org/badge/423495200.svg)](https://zenodo.org/badge/latestdoi/423495200)
