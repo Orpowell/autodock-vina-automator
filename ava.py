@@ -275,9 +275,16 @@ def visualise_structures():
     os.system(pymol_command)
 
 
+citation = ["* Oliver, P. (2021).", "* Autodock Vina Automator (Version v1.0.1) [Computer software].", "* DOI: Hi, if you're trying to cite my work, I don't know how to get a DOI... please reach out at doi@oliverpowell.com"]
+
 # Run Script
 if __name__ == '__main__':
     file_names = []  # Empty list for names of config files
+
+    print('*'*100)
+    print('* If you use this software please cite:')
+    [print(val) for val in citation]
+    print('*' * 100)
 
     working_directory = get_working_directory()  # Ask for working directory for ava
     os.chdir(working_directory)  # change directory to input
