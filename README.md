@@ -111,3 +111,6 @@ In the scenario, the structure of files produced by A.V.A for docking experiment
 
 Information for citing this repository can be found in the CITATION.cff file.
 
+## Feedback
+
+Any and all feedback is welcome, just raise an issue and I'll get back to you!
