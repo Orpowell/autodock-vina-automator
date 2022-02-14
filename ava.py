@@ -19,6 +19,45 @@ def get_working_directory():
         return retry
 
 
+# Collect receptor file name for log files
+def get_receptor():
+    receptor_file = input('Receptor file: ')
+
+    # Check that the file exists and returns filename if True
+    if os.path.isfile(receptor_file):
+        print('Receptor file accepted...')
+        return receptor_file
+
+    # If file not found - re-request file name
+    else:
+        print(f'Error: {receptor_file} not found')
+        print('Please check filenames and re-enter')
+        retry = get_receptor()
+        return retry
+
+
+def get_flex_receptor():
+    enable_flex = input('Do you want to use flexible docking?(y/n) ')
+
+    if enable_flex == 'y':
+
+        # Check that the file exists and returns filename if True
+        flex_receptor_file = input('Receptor file: ')
+        if os.path.isfile(flex_receptor_file):
+            print('Receptor file accepted...')
+            return flex_receptor_file
+
+        # If file not found - re-request file name
+        else:
+            print(f'Error: {flex_receptor_file} not found')
+            print('Please check filenames and re-enter')
+            retry = get_flex_receptor()
+            return retry
+
+    else:
+        return None
+
+
 # Collect ligand file names for log files
 def get_ligands():
     # Check that a file exists with the working directory
@@ -43,23 +82,6 @@ def get_ligands():
     else:
         print('File(s) accepted...')
         return ligands
-
-
-# Collect receptor file name for log files
-def get_receptor():
-    receptor_file = input('Receptor file: ')
-
-    # Check that the file exists and returns filename if True
-    if os.path.isfile(receptor_file):
-        print('Receptor file accepted...')
-        return receptor_file
-
-    # If file not found - re-request file name
-    else:
-        print(f'Error: {receptor_file} not found')
-        print('Please check filenames and re-enter')
-        retry = get_receptor()
-        return retry
 
 
 # Collect coordinates for log files
@@ -164,19 +186,22 @@ def get_seeds():
 
 
 # Write a basic  config file for AutoDock Vina - ligands, receptors, outputs, seed (0), grid size and coordinates.
-def config_writer(ligands, receptor_input, coord, box, seeding=0):
+def config_writer(ligands, receptor_input, flex_receptor, coord, box, seeding=0):
     conformations_directory = f'conformations-{seeding}'
     logs_directory = f'logs-{seeding}'
     file_name = f'{ligands[:-6]}-config-{seeding}.txt'
-    receptor_file = receptor_input
-    ligand_file = ligands
     output_file = f'{conformations_directory}/{ligands[:-6]}-{seeding}.pdbqt'
     log_file = f'{logs_directory}/{ligands[:-6]}-log-{seeding}.txt'
 
     # Generate the config file using inputs
     with open(file_name, 'w') as config:
-        config.write(f'receptor = {receptor_file}\n'  # receptor file
-                     f'ligand = {ligand_file}\n\n'  # ligand file
+
+        if flex_receptor is not None:
+            config.write(f'flex = {flex_receptor}\n')
+            config.write('exhaustiveness = 32')
+
+        config.write(f'receptor = {receptor_input}\n'  # receptor file
+                     f'ligand = {ligands}\n\n'  # ligand file
                      f'center_x = {coord[0]}\n'  # grid coordinates for box
                      f'center_y = {coord[1]}\n'
                      f'center_z = {coord[2]}\n\n'
@@ -189,6 +214,12 @@ def config_writer(ligands, receptor_input, coord, box, seeding=0):
                      )
 
         file_names.append(file_name)  # append file name to list for automatic docking
+
+    if conformations_directory not in os.listdir():
+        os.mkdir(conformations_directory)
+
+    if logs_directory not in os.listdir():
+        os.mkdir(logs_directory)
 
 
 def get_binding_data_csv():
@@ -275,28 +306,21 @@ def visualise_structures():
     os.system(pymol_command)
 
 
-citation = ["* Oliver, P. (2021).", "* Autodock Vina Automator (Version v1.0.2) [Computer software].", "* DOI: Hi, if you're trying to cite my work, I don't know how to get a DOI... please reach out at doi@oliverpowell.com"]
-
 # Run Script
 if __name__ == '__main__':
     file_names = []  # Empty list for names of config files
-
-    print('*'*100)
-    print('* If you use this software please cite:')
-    [print(val) for val in citation]
-    print('*' * 100)
-
     working_directory = get_working_directory()  # Ask for working directory for ava
     os.chdir(working_directory)  # change directory to input
 
-    ligand_list = get_ligands()  # Generate a list of ligand files
     receptor = get_receptor()  # Receive file name of receptor
+    flex_receptor = get_flex_receptor()
+    ligand_list = get_ligands()  # Generate a list of ligand files
     coordinates = get_coords()  # Receive co-ordinates of box in format x y z
     box_size = get_box_size()  # Receive box size in format x y z
     seed_list = get_seeds()  # Receive list of seeds for docking experiments
 
     # Generate config files for AutoDock Vina
-    [config_writer(x, receptor, coordinates, box_size, seeding=y) for y in seed_list for x in ligand_list]
+    [config_writer(x, receptor, flex_receptor, coordinates, box_size, seeding=y) for y in seed_list for x in ligand_list]
 
     # Run AutoDock Vina using generated config files list
     [os.system(f'vina --config {config}') for config in file_names]
