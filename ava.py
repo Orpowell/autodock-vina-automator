@@ -44,7 +44,7 @@ def get_flex_receptor():
         # Check that the file exists and returns filename if True
         flex_receptor_file = input('Receptor file: ')
         if os.path.isfile(flex_receptor_file):
-            print('Receptor file accepted...')
+            print('Flexible Receptor file accepted...')
             return flex_receptor_file
 
         # If file not found - re-request file name
@@ -198,7 +198,7 @@ def config_writer(ligands, receptor_input, flex_receptor, coord, box, seeding=0)
 
         if flex_receptor is not None:
             config.write(f'flex = {flex_receptor}\n')
-            config.write('exhaustiveness = 32')
+            config.write('exhaustiveness = 32\n')
 
         config.write(f'receptor = {receptor_input}\n'  # receptor file
                      f'ligand = {ligands}\n\n'  # ligand file
