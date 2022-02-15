@@ -2,7 +2,7 @@
 
 A.V.A is designed to automate the docking of multiple ligands to a single target protein in AutoDock Vina.  A.V.A automates large parts of the workflow associated with ligand docking including:
 
-- Preparing ligand config file for AutoDock Vina
+- Preparing ligand config files for AutoDock Vina
 - Running AutoDock Vina
 - Producing technical replicates of ligand docking simulations
 - Visualising ligand docking simulations
@@ -13,7 +13,7 @@ Dependencies for A.V.A can be found in requirements.txt.  A.V.A also requires Py
 
 ### Future Updates
 Future updates to A.V.A may include:
-- Introducing flexible residues in the target protein
+- Introducing flexible residues in the target protein (added 14/02/22, v1.1.0)
 - Docking for multiple target proteins to a set of ligands
 
 ## Installation on MacOSX and Linux
@@ -42,7 +42,7 @@ Alternatively, A.V.A can be run from an IDE.
 In this scenario, we will run predict how 3 ligands (Ligand1, Ligand2 & Ligand3) bind to the active site of the target protein (ProteinX).  To ensure reproducibility of results, each ligand docking will be run 3 times with 3 unique seeds: 22, 495 & 1,000. 
 
 ### Pre-processing for A.V.A
-Before running A.V.A, all files must be prepared in the appropriate format for AutoDock Vina (.pdbqt files). This must be done for ligands and the target protein. Additionally, the size and location of the search space must be determined for the target protein. These tasks can be achieved using AutoDock Tools. 
+Before running A.V.A, all files must be prepared in the appropriate format for AutoDock Vina (.pdbqt files). This must be done for ligands and the target protein. Additionally, the size and location of the search space must be determined for the target protein. These tasks can also be achieved using AutoDock Tools. 
 
 In our scenario, we will create the 4 following files: Ligand1.pdbqt, Ligand2.pdbqt, Ligand3.pdbqt & ProteinX.pdbqt . Using AutoDock Tools, we identified the co-ordinates for active site (10,-5,88) and the dimensions of the box needed to cover the area (20, 20, 20). 
 
@@ -53,13 +53,18 @@ Working directory:
 - The path to the directory containing all pre-processed files. 
 - e.g MyWorkingDirectory
 
-Ligand(s): 
-- The file name for each ligand separated by a space
-- e.g: Ligand1.pdbqt Ligand2.pdbqt Ligand3.pdbqt
-
 Receptor: 
 - The file name of the target protein
 - e.g: ProteinX.pdbqt
+	
+(Optional) Flexible Receptor:
+- A.V.A will prompt you to choose whether you want to perform flexible docking. If so provide file name of the flexible receptor.
+- e.g: ProteinX-flex.pdbqt
+- If selected, exhaustiveness is set to 32 by default. (This option may dramatically slow down run time)
+	
+Ligand(s): 
+- The file name for each ligand separated by a space
+- e.g: Ligand1.pdbqt Ligand2.pdbqt Ligand3.pdbqt
           
 Coordinates: 
 - The coordinates of the search area separated by spaces formatted as x y z
@@ -72,7 +77,7 @@ Seed(s):
 - The integers used to seed the docking experiment(s) separated by spaces
 - e.g: 20 400 1000 
 - The default seed used is 0, if left blank
-     
+ 
 Autodock Vina will begin running as soon as all parameters are provided.
 
 ### A.V.A Outputs
